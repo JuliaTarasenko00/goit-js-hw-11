@@ -1,4 +1,4 @@
-import Notiflix from 'notiflix';
+// import Notiflix from 'notiflix';
 import searchImages from './api.js';
 import loadMoreBtn from './loadMore.js';
 
@@ -10,7 +10,7 @@ const refs = {
 };
 
 const newImage = new searchImages();
-const newLoadMoreBtn = new loadMoreBtn('.load-more', isHidden = true)
+const newLoadMoreBtn = new loadMoreBtn('.load-more', true)
 
 refs.formEl.addEventListener('submit', onSubmit);
 newLoadMoreBtn.button.addEventListener('click', onClick);
