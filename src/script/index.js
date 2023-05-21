@@ -11,7 +11,7 @@ const refs = {
 
 const newImage = new searchImages();
 const newLoadMoreBtn = new loadMoreBtn('.load-more', true);
-let hasDisplayedMessage = false;
+// let hasDisplayedMessage = false;
 
 refs.formEl.addEventListener('submit', onSubmit);
 newLoadMoreBtn.button.addEventListener('click', onClick);
