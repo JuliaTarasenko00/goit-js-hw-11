@@ -75,8 +75,8 @@ function createMarkup({
   downloads,
   largeImageURL,
 }) {
-  return `<div class="photo-card"><a class="gallery__link" href='${largeImageURL}'>
-<img class="img-card" src="${webformatURL}" alt="${tags}" loading="lazy" /></a>
+  return `<div class="photo-card">
+<img class="img-card" src="${webformatURL}" alt="${tags}" loading="lazy" />
 <div class="info">
   <p class="info-item">
     <b>Likes: ${likes}</b>
