@@ -1,4 +1,4 @@
-// import Notiflix from 'notiflix';
+import Notiflix from 'notiflix';
 import searchImages from './api.js';
 import loadMoreBtn from './loadMore.js';
 
@@ -30,8 +30,8 @@ function onSubmit(ev) {
     delitMarkup();
    
     onClick().finally(() => {
-      Notiflix.Notify.success(`Hooray! We found ${newImage.totalHits} images.`)
       form.reset()
+      return Notiflix.Notify.success(`Hooray! We found ${newImage.totalHits} images.`)
     });
   }
 }
@@ -39,7 +39,7 @@ function onSubmit(ev) {
 function onClick() {
   if (newImage.page > 1 && newImage.page > Math.ceil(newImage.totalHits / 40)) {
     newLoadMoreBtn.hideBtn();
-    return Notiflix.Notify.warning("We're sorry, but you've reached the end of search results.");
+    Notiflix.Notify.warning("We're sorry, but you've reached the end of search results.");
   }
   newLoadMoreBtn.disable();
 
@@ -95,8 +95,8 @@ function delitMarkup() {
 
 function onError(er) {
    console.log(er);
-   Notiflix.Notify.failure(
+   newLoadMoreBtn.hideBtn();
+  Notiflix.Notify.failure(
     'Sorry, there are no images matching your search query. Please try again.'
   );
-   newLoadMoreBtn.hideBtn();
 }
