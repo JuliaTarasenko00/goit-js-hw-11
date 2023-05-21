@@ -32,7 +32,7 @@ function onSubmit(ev) {
 
     onClick().finally(() => form.reset());
   
-}
+}}
 
 function onClick() {
   if (newImage.page > 1 && newImage.page > Math.ceil(newImage.totalHits / 40)) {
@@ -53,7 +53,7 @@ async function getRestPage() {
       throw new Error(onError);
     }
     const markup =  articles.reduce((markup, hit) => markup + createMarkup(hit), '');
-    if(markup.length === 0){
+    if(!markup){
       return;
     } else{
       Notiflix.Notify.success(
