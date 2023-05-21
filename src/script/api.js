@@ -15,16 +15,16 @@ export default class searchImages {
   constructor() {
     this.page = 1;
     this.values = '';
-    this.totalHits = 0; 
+    // this.totalHits = 0; 
   }
   async getImages() {
     const { data } = await axios.get(
       `${URL}?key=${API_KEY}&q=${this.values}&image_type=photo&orientation=horizontal&safesearch=thue&per_page=40&page=${this.page}`
     )
+// console.log(data);
         this.incrementPage();
         this.totalHits = data.totalHits;
         return data.hits;
-
   }
   restPage() {
     this.page = 1;
