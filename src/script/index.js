@@ -11,6 +11,7 @@ const refs = {
 
 const newImage = new searchImages();
 const newLoadMoreBtn = new loadMoreBtn('.load-more', true);
+let hasDisplayedMessage = false;
 
 refs.formEl.addEventListener('submit', onSubmit);
 newLoadMoreBtn.button.addEventListener('click', onClick);
@@ -29,7 +30,7 @@ function onSubmit(ev) {
 
     newLoadMoreBtn.removeBtn();
     delitMarkup();
-
+    
     onClick().finally(() => form.reset());
   
 }}
@@ -53,12 +54,11 @@ async function getRestPage() {
       throw new Error(onError);
     }
     const markup =  articles.reduce((markup, hit) => markup + createMarkup(hit), '');
-    if(!markup){
+    if (!markup) {
       return;
-    } else{
-      Notiflix.Notify.success(
-        `Hooray! We found ${newImage.totalHits} images.`
-      );
+    } else if(!hasDisplayedMessage){
+      Notiflix.Notify.success(`Hooray! We found ${newImage.totalHits} images.`);
+      hasDisplayedMessage = true;
     }
     return  updateMarkup(markup);
   } catch (err) {
@@ -73,7 +73,6 @@ function createMarkup({
   views,
   comments,
   downloads,
-  largeImageURL,
 }) {
   return `<div class="photo-card">
 <img class="img-card" src="${webformatURL}" alt="${tags}" loading="lazy" />
