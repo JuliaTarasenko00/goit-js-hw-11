@@ -78,8 +78,8 @@ function createMarkup({
   downloads,
   largeImageURL,
 }) {
-  return `<div class="photo-card"><a class="gallery__link" href='${largeImageURL}'>
-<img class="img-card" src="${webformatURL}" alt="${tags}" loading="lazy"/><a>
+  return `<div class="photo-card">
+<img class="img-card" src="${webformatURL}" alt="${tags}" loading="lazy"/>
 <div class="info">
   <p class="info-item">
     <b>Likes: ${likes}</b>
@@ -99,13 +99,13 @@ function createMarkup({
 function updateMarkup(markup) {
   refs.divEl.insertAdjacentHTML('beforeend', markup);
 }
-function onClickImg(ev){
-  ev.preventDefault();
-  let gallery = new SimpleLightbox('.gallery a');
-  gallery.on('show.simplelightbox', function () {
-    gallery.refresh()
-  })
-}
+// function onClickImg(ev){
+//   ev.preventDefault();
+//   let gallery = new SimpleLightbox('.gallery a');
+//   gallery.on('show.simplelightbox', function () {
+//     gallery.refresh()
+//   })
+// }
 
 
 function delitMarkup() {
