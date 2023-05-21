@@ -54,12 +54,12 @@ async function getRestPage() {
       throw new Error(onError);
     }
     const markup =  articles.reduce((markup, hit) => markup + createMarkup(hit), '');
-    if (!markup) {
-      return;
-    } else if(!hasDisplayedMessage){
-      Notiflix.Notify.success(`Hooray! We found ${newImage.totalHits} images.`);
-      hasDisplayedMessage = true;
-    }
+    // if (!markup) {
+    //   return;
+    // } else if(!hasDisplayedMessage){
+    //   Notiflix.Notify.success(`Hooray! We found ${newImage.totalHits} images.`);
+    //   hasDisplayedMessage = true;
+    // }
     return  updateMarkup(markup);
   } catch (err) {
     onError(err);
