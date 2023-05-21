@@ -30,13 +30,8 @@ function onSubmit(ev) {
     newLoadMoreBtn.removeBtn();
     delitMarkup();
 
-    onClick().finally(() => {
-      form.reset();
-      return Notiflix.Notify.success(
-        `Hooray! We found ${newImage.totalHits} images.`
-      );
-    });
-  }
+    onClick().finally(() => form.reset());
+  
 }
 
 function onClick() {
@@ -58,6 +53,13 @@ async function getRestPage() {
       throw new Error(onError);
     }
     const markup =  articles.reduce((markup, hit) => markup + createMarkup(hit), '');
+    if(markup.length === 0){
+      return;
+    } else{
+      Notiflix.Notify.success(
+        `Hooray! We found ${newImage.totalHits} images.`
+      );
+    }
     return  updateMarkup(markup);
   } catch (err) {
     onError(err);
