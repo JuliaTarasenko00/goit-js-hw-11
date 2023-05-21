@@ -1,3 +1,5 @@
+import SimpleLightbox from "simplelightbox";
+import "simplelightbox/dist/simple-lightbox.min.css";
 import Notiflix from 'notiflix';
 import searchImages from './api.js';
 import loadMoreBtn from './loadMore.js';
@@ -11,7 +13,7 @@ const refs = {
 
 const newImage = new searchImages();
 const newLoadMoreBtn = new loadMoreBtn('.load-more', true);
-
+refs.divEl.addEventListener('click', onClickImg)
 refs.formEl.addEventListener('submit', onSubmit);
 newLoadMoreBtn.button.addEventListener('click', onClick);
 
@@ -26,10 +28,10 @@ function onSubmit(ev) {
   } else {
     newImage.values = value;
     newImage.restPage();
-
+  
     newLoadMoreBtn.removeBtn();
     delitMarkup();
-    
+  
     onClick().finally(() => {
       form.reset()   
       });
@@ -50,15 +52,17 @@ function onClick() {
 async function getRestPage() {
   try {
     const articles = await newImage.getImages();
+    console.log(newImage.page)
+    console.log(newImage.totalHits)
     // console.log(articles);
     if (articles.length === 0) {
       throw new Error(onError);
     }
     const markup =  articles.reduce((markup, hit) => markup + createMarkup(hit), '');
+  
     if (newImage.page-1 === 1) {
       Notiflix.Notify.success(`Hooray! We found ${newImage.totalHits} images.`);
    } 
-    // console.log(newImage.page-1)
     return  updateMarkup(markup);
   } catch (err) {
     onError(err);
@@ -72,9 +76,10 @@ function createMarkup({
   views,
   comments,
   downloads,
+  largeImageURL,
 }) {
-  return `<div class="photo-card">
-<img class="img-card" src="${webformatURL}" alt="${tags}" loading="lazy" />
+  return `<div class="photo-card"><a class="gallery__link" href='${largeImageURL}'>
+<img class="img-card" src="${webformatURL}" alt="${tags}" loading="lazy"/><a>
 <div class="info">
   <p class="info-item">
     <b>Likes: ${likes}</b>
@@ -94,6 +99,14 @@ function createMarkup({
 function updateMarkup(markup) {
   refs.divEl.insertAdjacentHTML('beforeend', markup);
 }
+function onClickImg(ev){
+  ev.preventDefault();
+  let gallery = new SimpleLightbox('.gallery a');
+  gallery.on('show.simplelightbox', function () {
+    gallery.refresh()
+  })
+}
+
 
 function delitMarkup() {
   refs.divEl.innerHTML = '';

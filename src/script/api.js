@@ -15,7 +15,7 @@ export default class searchImages {
   constructor() {
     this.page = 1;
     this.values = '';
-    // this.totalHits = 0; 
+    this.totalHits = 0; 
   }
   async getImages() {
     const { data } = await axios.get(
