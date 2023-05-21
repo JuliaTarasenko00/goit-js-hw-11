@@ -13,7 +13,7 @@ const refs = {
 
 const newImage = new searchImages();
 const newLoadMoreBtn = new loadMoreBtn('.load-more', true);
-refs.divEl.addEventListener('click', onClickImg)
+// refs.divEl.addEventListener('click', onClickImg)
 refs.formEl.addEventListener('submit', onSubmit);
 newLoadMoreBtn.button.addEventListener('click', onClick);
 
@@ -79,6 +79,7 @@ function createMarkup({
   largeImageURL,
 }) {
   return `<div class="photo-card">
+
 <img class="img-card" src="${webformatURL}" alt="${tags}" loading="lazy"/>
 <div class="info">
   <p class="info-item">
@@ -103,7 +104,10 @@ function updateMarkup(markup) {
 //   ev.preventDefault();
 //   let gallery = new SimpleLightbox('.gallery a');
 //   gallery.on('show.simplelightbox', function () {
-//     gallery.refresh()
+//     const history = true;
+//     console.log(history)
+//     gallery.close();
+//     gallery.refresh();
 //   })
 // }
 
