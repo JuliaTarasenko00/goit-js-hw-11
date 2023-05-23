@@ -11,9 +11,11 @@ const refs = {
   imgEl: document.querySelector('.img-card'),
 };
 
+const options = {
+  showCounter: false,
+}
 const newImage = new searchImages();
 const newLoadMoreBtn = new loadMoreBtn('.load-more', true);
-// refs.divEl.addEventListener('click', onClickImg)
 refs.formEl.addEventListener('submit', onSubmit);
 newLoadMoreBtn.button.addEventListener('click', onClick);
 
@@ -28,7 +30,7 @@ function onSubmit(ev) {
   } else {
     newImage.values = value;
     newImage.restPage();
-  
+   
     newLoadMoreBtn.removeBtn();
     delitMarkup();
   
@@ -37,14 +39,24 @@ function onSubmit(ev) {
       });
   
 }}
+function scroll() {
+  const { height: cardHeight } = refs.divEl.firstElementChild.getBoundingClientRect();
+  
+  window.scrollBy({
+    top: cardHeight * 2,
+    behavior: "smooth",
+  });
+  }
 
 function onClick() {
   if (newImage.page > 1 && newImage.page > Math.ceil(newImage.totalHits / 40)) {
     newLoadMoreBtn.hideBtn();
+    scroll();
     return Notiflix.Notify.warning(
       "We're sorry, but you've reached the end of search results."
     );
   }
+ 
   newLoadMoreBtn.disable();
   return getRestPage().then(() => newLoadMoreBtn.enable());
 }
@@ -52,18 +64,20 @@ function onClick() {
 async function getRestPage() {
   try {
     const articles = await newImage.getImages();
-    console.log(newImage.page)
-    console.log(newImage.totalHits)
+    // console.log(newImage.page)
+    // console.log(newImage.totalHits)
     // console.log(articles);
     if (articles.length === 0) {
       throw new Error(onError);
     }
+
     const markup =  articles.reduce((markup, hit) => markup + createMarkup(hit), '');
-  
     if (newImage.page-1 === 1) {
       Notiflix.Notify.success(`Hooray! We found ${newImage.totalHits} images.`);
    } 
-    return  updateMarkup(markup);
+
+    updateMarkup(markup);
+    initializeLightbox();
   } catch (err) {
     onError(err);
   };
@@ -79,8 +93,8 @@ function createMarkup({
   largeImageURL,
 }) {
   return `<div class="photo-card">
-
-<img class="img-card" src="${webformatURL}" alt="${tags}" loading="lazy"/>
+  <a class="gallery__link" href='${largeImageURL}'>
+<img class="img-card" src="${webformatURL}" alt="${tags}" loading="lazy"/><a>
 <div class="info">
   <p class="info-item">
     <b>Likes: ${likes}</b>
@@ -97,25 +111,18 @@ function createMarkup({
 </div>
 </div>`;
 }
+
 function updateMarkup(markup) {
   refs.divEl.insertAdjacentHTML('beforeend', markup);
+  scroll();
 }
-// function onClickImg(ev){
-//   ev.preventDefault();
-//   let gallery = new SimpleLightbox('.gallery a');
-//   gallery.on('show.simplelightbox', function () {
-//     const history = true;
-//     console.log(history)
-//     gallery.close();
-//     gallery.refresh();
-//   })
-// }
-
-
+function initializeLightbox() {
+  const lightbox = new SimpleLightbox('.gallery__link', options);
+  lightbox.refresh(); 
+}
 function delitMarkup() {
   refs.divEl.innerHTML = '';
 }
-
 function onError(er) {
   console.log(er);
   newLoadMoreBtn.hideBtn();
